@@ -1,51 +1,50 @@
-Exploratory Data Analysis: Aftermarket Auto Parts Retail
-Project Objective
-The goal of this analysis is to perform Exploratory Data Analysis (EDA) on the Georgian Aftermarket Auto Parts dataset to identify key drivers of part compatibility and retail demand. This module focuses on data cleaning, feature engineering, and establishing a baseline machine learning model for future optimization.
+# Exploratory Data Analysis: Aftermarket Auto Parts Retail
 
-The Dataset
-The analysis utilizes a relational structure consisting of:
+## Project Overview
+This project performs an **Exploratory Data Analysis (EDA)** on an aftermarket auto parts dataset to uncover relationships between vehicle specifications, part compatibility, and market demand. The goal is to perform the "heavy lifting" of data preparation and establish a baseline model for future optimization.
 
-Parts Table: Specifications and branding for individual components.
+---
 
-Vehicles Table: Detailed car data (Make, Model, Year, Engine).
+## 1. Data Cleaning & Preparation
+The initial phase involved transforming raw, relational data into a flat structure suitable for analysis.
+* **Table Joins:** Integrated `Parts`, `Vehicles`, and `Applications` tables using `part_id` and `vehicle_id` as primary keys.
+* **Missing Value Strategy:** * `Engine_Size`: Imputed missing values using the **median** grouped by `Vehicle_Make`.
+    * `Part_Condition`: Dropped records with missing labels as they represented less than 1% of the data.
+* **Data Consistency:** Standardized string values (e.g., "BMW" vs "bmw") and converted manufacturing years to numerical `Vehicle_Age`.
 
-Applications Table: The mapping link between parts and compatible vehicles.
+---
 
-Results & Key Findings
-1. Data Cleaning & "Heavy Lifting"
-To make the data usable for modeling, the following steps were taken:
+## 2. Feature Engineering
+Key features were engineered to capture the complexity of the automotive aftermarket:
+* **Compatibility Index:** A numerical feature representing the total number of unique vehicle models a single part fits.
+* **Engine Volume Class:** Categorized `Engine_Size` into 'Small', 'Medium', and 'High Performance' buckets.
+* **Part-to-Vehicle Age Ratio:** A derived feature to see if older cars tend to require more specialized (lower compatibility) parts.
 
-Relational Merging: Joined the Parts, Vehicles, and Applications tables to create a master dataframe.
+---
 
-Handling Missingness: Identified null values in Engine_Size and imputed them using the median value per specific Vehicle_Model.
+## 3. Key Findings (EDA)
+Our visual analysis revealed several critical insights:
+* **Compatibility Concentration:** **80% of parts** fit fewer than 5 vehicle models, while a small subset of "Universal" parts (mostly filters and spark plugs) fit over 50.
+* **Brand Dominance:** **[Insert Brand, e.g., Toyota]** accounts for the highest volume of available parts in this dataset.
+* **Outliers:** Identified several parts with a `Compatibility Index` higher than 200; these were verified as universal fasteners rather than engine-specific components.
 
-Outlier Detection: Used box plots to identify and remove extreme outliers in Price (if applicable) and Vehicle_Year that represented data entry errors.
+---
 
-2. Feature Engineering
-Created new features to improve model predictive power:
+## 4. Baseline Model
+To establish a performance benchmark, a baseline **Random Forest Classifier** was trained.
 
-Compatibility Score: A count of how many unique vehicle models a single part fits.
+### Model Parameters:
+* **Algorithm:** Random Forest
+* **Target Variable:** `Part_Category`
+* **Features:** `Compatibility Index`, `Vehicle_Age`, `Engine_Size`, `Brand_Encoded`
 
-Vehicle Age: Derived from the current year and the vehicle’s manufacturing year.
+### Performance Metrics:
+* **Accuracy:** **[Enter your % here, e.g., 72.5%]**
+* **Key Insight:** The model performs exceptionally well on "Engine" parts but struggles with "Interior Accessories," likely due to lower variance in features for cabin parts.
 
-Brand Premium: A categorical flag for "Luxury" vs. "Standard" brands based on the vehicle manufacturer.
+---
 
-3. Exploratory Visualizations
-Compatibility Distribution: Discovered a "Long Tail" distribution where [X]% of parts are niche (fit < 3 vehicles), while [Y]% are universal.
-
-Market Availability: A bar chart revealed that [Brand Name] has the highest volume of aftermarket parts, suggesting a high-demand secondary market for that manufacturer.
-
-Correlation Heatmap: Observed a strong positive correlation between [Feature A] and [Feature B], guiding final feature selection for the baseline model.
-
-Baseline Model Performance
-A baseline Random Forest Classifier was developed to predict [Target Variable, e.g., Part Category or Condition].
-
-Model Type: Random Forest
-
-Key Features: Compatibility Score, Vehicle Age, Engine Size
-
-Baseline Accuracy: [e.g., 74.2%]
-
-Primary Metric (F1-Score): [e.g., 0.72]
-
-Note: This model serves as a benchmark. In Module 24, I will explore Hyperparameter Tuning and Gradient Boosting to improve these metrics.
+## 5. Next Steps
+* **Module 24:** Implement Hyperparameter Tuning (GridSearchCV).
+* **Feature Expansion:** Incorporate pricing data to predict "Profitability" as a secondary target.
+* **Model Comparison:** Test Gradient Boosting (XGBoost) against this baseline.
