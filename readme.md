@@ -41,6 +41,22 @@ Before moving to predictive modeling, the project establishes a baseline of the 
 * Correlation between part "Versatility" and market price.
 * Identification of "Universal Parts" vs. "Niche Parts."
 
-### 3. Feature Engineering (Current Phase)
+### 3. Feature Engineering 
 * **Age Match:** Calculating the delta between part manufacturing and vehicle age.
 * **Brand Affinity:**
+
+### 4. Predictive Analysis 
+This phase utilized machine learning to improve catalog accuracy and identify market opportunities:
+
+* **Compatibility Link Prediction**: 
+    * **Objective**: Predict the probability that a specific part fits a vehicle even if not explicitly listed.
+    * **Results**: A **Random Forest Classifier** achieved **96.9% accuracy**.
+    * **Outcome**: Identified **293 high-probability missing links** (potential fitments with >70% probability not currently in the dataset).
+
+* **Price Elasticity Modeling**: 
+    * **Objective**: Analyzed how "Versatility" (number of compatible vehicles) influences the market price.
+    * **Result**: Found a near-zero correlation (**-0.0153**), suggesting pricing is driven by factors other than general compatibility.
+
+* **Market Gap Identification**:
+    * **Objective**: Forecasted "under-supplied" segments where vehicle population is high but part availability is low.
+    * **Findings**: **Oldsmobile**, **Arcfox**, and **Fisker** showed the lowest coverage (1 part each), representing significant supply-chain opportunities.
